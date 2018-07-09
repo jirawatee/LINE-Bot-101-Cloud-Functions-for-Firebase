@@ -16,3 +16,11 @@ Cloud Functions is a hosted, private, and scalable Node.js environment where you
 
 ## Blog
 * [สร้าง LINE Bot ด้วย Messaging API และ Cloud Functions for Firebase](https://medium.com/linedevth/20d284edea1b)
+
+## Screenshots
+<table width="100%">
+	<tr>
+	  <th><img src="https://user-images.githubusercontent.com/1763410/42454264-3f36aee6-83b9-11e8-918d-6559fb6be89f.gif" width="100%"></th>
+	  <th><img src="https://user-images.githubusercontent.com/1763410/42454265-3f7261ca-83b9-11e8-86ec-65cdaac1e2d6.gif" width="100%"></th>
+	</tr>
+</table>
