@@ -339,20 +339,20 @@ const actions = event => {
           type: "text",
           text: JSON.stringify(event)
           /*
-					quickReply: {
-						items: [
-							{
-								type: `action`,
-								action: {
-									type: `postback`,
-									label: `Postback`,
-									data: `action=buy&itemid=123`,
-									displayText: `This message was posted by Postback`
-								}
-						  	}
-						]
-					}
-					*/
+          quickReply: {
+            items: [
+              {
+                type: `action`,
+                action: {
+                  type: `postback`,
+                  label: `Postback`,
+                  data: `action=buy&itemid=123`,
+                  displayText: `This message was posted by Postback`
+                }
+                }
+            ]
+          }
+          */
         }
       ]
     })
