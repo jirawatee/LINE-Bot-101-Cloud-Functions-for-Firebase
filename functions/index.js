@@ -2,9 +2,11 @@ const functions = require("firebase-functions");
 const request = require("request-promise");
 
 const LINE_MESSAGING_API = "https://api.line.me/v2/bot/message";
+const LINE_UID = "<YOUR-USER-ID>";
 const LINE_HEADER = {
   "Content-Type": "application/json",
-  Authorization: `Bearer <YOUR-CHANNEL-ACCESS-TOKEN>`
+  Authorization:
+    "Bearer <YOUR-CHANNEL-ACCESS-TOKEN>"
 };
 
 const runtimeOpts = {
@@ -12,111 +14,26 @@ const runtimeOpts = {
   memory: "2GB"
 };
 
-exports.LineBotQuickReply = functions
-  .region("asia-northeast1")
-  .runWith(runtimeOpts)
-  .https.onRequest((req, res) => {
-    if (req.body.events[0].message.type !== "text") {
-      return;
-    }
-    quickReply(req.body.events[0]);
-  });
-
-const quickReply = event => {
-  return request({
-    method: `POST`,
-    uri: `${LINE_MESSAGING_API}/reply`,
-    headers: LINE_HEADER,
-    body: JSON.stringify({
-      replyToken: event.replyToken,
-      messages: [
-        {
-          type: `text`,
-          text: event.message.text,
-          quickReply: {
-            items: [
-              {
-                type: `action`,
-                action: {
-                  type: `cameraRoll`,
-                  label: `Camera Roll`
-                }
-              },
-              {
-                type: `action`,
-                action: {
-                  type: `camera`,
-                  label: `Camera`
-                }
-              },
-              {
-                type: `action`,
-                action: {
-                  type: `location`,
-                  label: `Location`
-                }
-              },
-              {
-                type: `action`,
-                imageUrl: `https://cdn1.iconfinder.com/data/icons/mix-color-3/502/Untitled-1-512.png`,
-                action: {
-                  type: `message`,
-                  label: `Message`,
-                  text: `Hello World!`
-                }
-              },
-              {
-                type: `action`,
-                action: {
-                  type: `postback`,
-                  label: `Postback`,
-                  data: `action=buy&itemid=123`,
-                  displayText: `Buy`
-                }
-              },
-              {
-                type: `action`,
-                imageUrl: `https://icla.org/wp-content/uploads/2018/02/blue-calendar-icon.png`,
-                action: {
-                  type: `datetimepicker`,
-                  label: `Datetime Picker`,
-                  data: `storeId=12345`,
-                  mode: `datetime`,
-                  initial: `2018-08-10t00:00`,
-                  max: `2018-12-31t23:59`,
-                  min: `2018-08-01t00:00`
-                }
-              }
-            ]
-          }
-        }
-      ]
-    })
-  });
-};
-
 exports.LineBotReply = functions
   .region("asia-northeast1")
   .runWith(runtimeOpts)
   .https.onRequest((req, res) => {
-    if (req.method === "POST"){
+    if (req.method === "POST") {
       reply(req.body);
-      return res.status(200).send(`Done`);
-    } else {
-      return res.status(200).send(`Done`);
     }
+    return res.status(200).send(req.method);
   });
 
 const reply = bodyResponse => {
   return request({
-    method: `POST`,
+    method: "POST",
     uri: `${LINE_MESSAGING_API}/reply`,
     headers: LINE_HEADER,
     body: JSON.stringify({
       replyToken: bodyResponse.events[0].replyToken,
       messages: [
         {
-          type: `text`,
+          type: "text",
           text: JSON.stringify(bodyResponse)
         }
       ]
@@ -129,7 +46,7 @@ exports.LineBotPush = functions
   .runWith(runtimeOpts)
   .https.onRequest((req, res) => {
     return request({
-      method: `GET`,
+      method: "GET",
       uri: `https://api.openweathermap.org/data/2.5/weather?appid=<YOUR-APP-ID>&units=metric&type=accurate&zip=10330,th`,
       json: true
     })
@@ -146,21 +63,21 @@ exports.LineBotPush = functions
 
 const push = (res, msg) => {
   return request({
-    method: `POST`,
+    method: "POST",
     uri: `${LINE_MESSAGING_API}/push`,
     headers: LINE_HEADER,
     body: JSON.stringify({
-      to: `<YOUR-USER-ID>`,
+      to: LINE_UID,
       messages: [
         {
-          type: `text`,
+          type: "text",
           text: msg
         }
       ]
     })
   })
     .then(() => {
-      return res.status(200).send(`Done`);
+      return res.status(200).send("Done");
     })
     .catch(error => {
       return Promise.reject(error);
@@ -172,77 +89,75 @@ exports.LineBotMulticast = functions
   .runWith(runtimeOpts)
   .https.onRequest((req, res) => {
     const text = req.query.text;
-    if (text !== undefined && text.trim() !== ``) {
+    if (text !== undefined && text.trim() !== "") {
       return multicast(res, text);
     } else {
-      const ret = { message: `Text not found` };
+      const ret = { message: "Text not found" };
       return res.status(400).send(ret);
     }
   });
 
 const multicast = (res, msg) => {
   return request({
-    method: `POST`,
+    method: "POST",
     uri: `${LINE_MESSAGING_API}/multicast`,
     headers: LINE_HEADER,
     body: JSON.stringify({
       to: [
-        `<USER-ID-1>`,
-        `<USER-ID-2>`
+        LINE_UID,
+        "<ANOTHER-USER-ID>"
       ],
       messages: [
         {
-          type: `text`,
+          type: "text",
           text: msg
         }
       ]
     })
   })
     .then(() => {
-      const ret = { message: `Done` };
+      const ret = { message: "Multicast done" };
       return res.status(200).send(ret);
     })
     .catch(error => {
-      const ret = { message: `Sending error: ${error}` };
+      const ret = { message: `Multicast error: ${error}` };
       return res.status(500).send(ret);
     });
 };
 
-exports.LineBotActions = functions
+exports.LineBotBroadcast = functions
   .region("asia-northeast1")
   .runWith(runtimeOpts)
   .https.onRequest((req, res) => {
-    actions(req.body.events[0]);
+    const text = req.query.text;
+    if (text !== undefined && text.trim() !== "") {
+      return broadcast(res, text);
+    } else {
+      const ret = { message: "Text not found" };
+      return res.status(400).send(ret);
+    }
   });
 
-const actions = event => {
+const broadcast = (res, msg) => {
   return request({
-    method: `POST`,
-    uri: `${LINE_MESSAGING_API}/reply`,
+    method: "POST",
+    uri: `${LINE_MESSAGING_API}/broadcast`,
     headers: LINE_HEADER,
     body: JSON.stringify({
-      replyToken: event.replyToken,
       messages: [
         {
-          type: `text`,
-          text: JSON.stringify(event)
-          /*
-					quickReply: {
-						items: [
-							{
-								type: `action`,
-								action: {
-									type: `postback`,
-									label: `Postback`,
-									data: `action=buy&itemid=123`,
-									displayText: `This message was posted by Postback`
-								}
-						  	}
-						]
-					}
-					*/
+          type: "text",
+          text: msg
         }
       ]
     })
-  });
+  })
+    .then(() => {
+      const ret = { message: "Broadcast done" };
+      return res.status(200).send(ret);
+    })
+    .catch(error => {
+      const ret = { message: `Broadcast error: ${error}` };
+      return res.status(500).send(ret);
+    });
 };
