@@ -1,6 +1,6 @@
 {
   "name": "functions",
-  "description": "Cloud Functions for Firebase",
+  "description": "LINE Bot 101 by Messaging API and Cloud Functions for Firebase",
   "scripts": {
     "lint": "eslint .",
     "serve": "firebase serve --only functions",
@@ -10,17 +10,16 @@
     "logs": "firebase functions:log"
   },
   "dependencies": {
-    "firebase-admin": "^8.9.2",
-    "firebase-functions": "^3.3.0",
-    "request": "^2.88.2",
-    "request-promise": "^4.2.5"
+    "axios": "^0.21.1",
+    "firebase-admin": "^9.5.0",
+    "firebase-functions": "^3.13.2"
   },
   "devDependencies": {
-    "eslint": "^6.8.0",
-    "eslint-plugin-promise": "^4.2.1"
+    "eslint": "^7.21.0",
+    "eslint-plugin-promise": "^4.3.1"
   },
   "engines": {
-    "node": "8"
+    "node": "14"
   },
   "private": true
 }
