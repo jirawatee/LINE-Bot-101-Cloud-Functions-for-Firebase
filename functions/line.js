@@ -1,10 +1,8 @@
-"use strict"
-
 const functions = require("firebase-functions")
 const axios = require('axios')
 const util = require('./util')
 
-const runtimeOpts = { timeoutSeconds: 8, memory: "4GB" }
+const runtimeOpts = { timeoutSeconds: 8, memory: "1GB", maxInstances: 1 }
 const region = "asia-southeast2"
 const LINE_USER_ID = functions.config().jirawatee.userid
 const OPENWEATHER_API = "https://api.openweathermap.org/data/2.5/weather/"

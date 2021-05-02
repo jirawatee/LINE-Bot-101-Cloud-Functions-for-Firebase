@@ -54,7 +54,7 @@ const linepay = () => ({
       ]
     }
   }
-})
+});
 
 const linehack = (data) => ({
   "type": "flex",
@@ -271,7 +271,7 @@ const linehack = (data) => ({
       }
     }
   }
-})
+});
 
 const gold = (prices) => ({
   "type": "flex",
@@ -382,6 +382,116 @@ const gold = (prices) => ({
       ]
     }
   }
-})
+});
 
-module.exports = { linehack, gold, linepay }
+const covid = (reports) => ({
+  "type": "flex",
+  "altText": "Flex Message",
+  "contents": {
+    "type": "bubble",
+    "size": "giga",
+    "direction": "ltr",
+    "header": {
+      "type": "box",
+      "layout": "vertical",
+      "backgroundColor": "#E1298EFF",
+      "contents": [
+        {
+          "type": "text",
+          "text": "ติดเชื้อสะสม",
+          "color": "#FFFFFFFF",
+          "align": "center"
+        },
+        {
+          "type": "text",
+          "text": reports[0],
+          "weight": "bold",
+          "size": "4xl",
+          "color": "#FFFFFFFF",
+          "align": "center"
+        }
+      ]
+    },
+    "body": {
+      "type": "box",
+      "layout": "horizontal",
+      "spacing": "md",
+      "contents": [
+        {
+          "type": "box",
+          "layout": "vertical",
+          "flex": 1,
+          "paddingAll": "2%",
+          "backgroundColor": "#046034",
+          "cornerRadius": "8px",
+          "contents": [
+            {
+              "type": "text",
+              "text": "หายแล้ว",
+              "color": "#FFFFFF",
+              "align": "center"
+            },
+            {
+              "type": "text",
+              "text": reports[1],
+              "weight": "bold",
+              "size": "xl",
+              "color": "#FFFFFF",
+              "align": "center"
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "layout": "vertical",
+          "flex": 1,
+          "paddingAll": "2%",
+          "backgroundColor": "#179C9B",
+          "cornerRadius": "8px",
+          "contents": [
+            {
+              "type": "text",
+              "text": "รักษาอยู่ใน รพ.",
+              "color": "#FFFFFF",
+              "align": "center"
+            },
+            {
+              "type": "text",
+              "text": reports[2],
+              "weight": "bold",
+              "size": "xl",
+              "color": "#FFFFFF",
+              "align": "center"
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "layout": "vertical",
+          "flex": 1,
+          "paddingAll": "2%",
+          "backgroundColor": "#666666",
+          "cornerRadius": "8px",
+          "contents": [
+            {
+              "type": "text",
+              "text": "เสียชีวิต",
+              "color": "#FFFFFF",
+              "align": "center"
+            },
+            {
+              "type": "text",
+              "text": reports[3],
+              "weight": "bold",
+              "size": "xl",
+              "color": "#FFFFFF",
+              "align": "center"
+            }
+          ]
+        }
+      ]
+    }
+  }
+});
+
+module.exports = { linehack, gold, linepay, covid }
