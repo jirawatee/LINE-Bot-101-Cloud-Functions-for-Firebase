@@ -3,7 +3,7 @@
   "description": "LINE Bot 101 by Messaging API and Cloud Functions for Firebase",
   "scripts": {
     "lint": "eslint .",
-    "serve": "firebase serve --only functions",
+    "serve": "firebase emulators:start --only functions",
     "shell": "firebase functions:shell",
     "start": "npm run shell",
     "deploy": "firebase deploy --only functions",
@@ -11,12 +11,14 @@
   },
   "dependencies": {
     "axios": "^0.21.1",
-    "firebase-admin": "^9.5.0",
-    "firebase-functions": "^3.13.2"
+    "cheerio": "^1.0.0-rc.6",
+    "firebase-admin": "^9.7.0",
+    "firebase-functions": "^3.13.2",
+    "uuid-v4": "^0.1.0"
   },
   "devDependencies": {
-    "eslint": "^7.21.0",
-    "eslint-plugin-promise": "^4.3.1"
+    "eslint": "^7.25.0",
+    "eslint-plugin-promise": "^5.1.0"
   },
   "engines": {
     "node": "14"

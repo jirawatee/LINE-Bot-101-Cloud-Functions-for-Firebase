@@ -1,6 +1,6 @@
 const functions = require("firebase-functions")
 const util = require('./util')
-const runtimeOpts = { timeoutSeconds: 8, memory: "4GB" }
+const runtimeOpts = { timeoutSeconds: 8, memory: "1GB" }
 const region = "asia-southeast2"
 
 exports.LineProxy = functions.region(region).runWith(runtimeOpts).https.onRequest(async (req, res) => {
@@ -10,6 +10,9 @@ exports.LineProxy = functions.region(region).runWith(runtimeOpts).https.onReques
     }
 
     let event = req.body.events[0]
+    if (event === undefined) {
+      return res.end()
+    }
 
     if (event.message !== undefined) {
       if (event.message.type !== "text") {
@@ -19,7 +22,7 @@ exports.LineProxy = functions.region(region).runWith(runtimeOpts).https.onReques
       }
     }
   }
-  return res.status(200).send(req.method)
+  return res.send(req.method)
 })
 
 const line = require('./line')
